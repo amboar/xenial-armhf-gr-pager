@@ -1,0 +1,24 @@
+configuredir: build
+makedir: build
+installdir: build
+depends: cmake-native
+
+vars:
+  config_opt: "" 
+
+configure: "BUILD_DIR=`pwd`
+  cd $BUILD_DIR/../../
+  ln -s arm-$basename $basename
+  cd $BUILD_DIR
+  source $prefix/oecore-cross/environment
+  cmake .. -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_BUILD_TYPE=$cmakebuildtype -DBUILD_RPATH=TRUE \
+    -DCMAKE_CXX_FLAGS=-fpermissive -DCMAKE_TOOLCHAIN_FILE=$prefix/oecore-cross/cross.cmake \
+    $config_opt "
+
+make: make -j $makewidth -l $makewidth
+
+install: make install
+
+uninstall: "make uninstall
+  unlink ../../$basename "
+

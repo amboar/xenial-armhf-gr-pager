@@ -1,0 +1,15 @@
+category: common
+depends:
+source: /home/rpi/pybombs/oecore-pkg.tar.gz
+inherit: empty
+
+configure: ""
+
+make: "../oecore.sh -d $prefix/oecore-cross/ -y &&
+  cp ../cross.cmake $prefix/oecore-cross/ &&
+  cd $prefix/oecore-cross/ &&
+  ln -s $(ls environment*) oecore-environment "
+
+install: ""
+
+uninstall: rm -rf $prefix/oecore-cross/
